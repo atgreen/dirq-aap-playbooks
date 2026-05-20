@@ -1,7 +1,7 @@
 # Run a single command on every Linux host and print the output.
 # Demonstrates capturing stdout from a remote command via DirQ exec.
 - name: Show uptime
-  hosts: os_linux
+  hosts: os_redhat
   gather_facts: false
   tasks:
     - name: uptime
