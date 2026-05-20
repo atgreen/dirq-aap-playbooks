@@ -1,0 +1,20 @@
+# Smoke test for Windows hosts via DirQ.
+# Targets the auto-generated os_windows group from the inventory plugin
+# and uses the ansible.windows collection (bundled in dirq-ee).
+- name: Show Windows uptime
+  hosts: os_windows
+  gather_facts: false
+  tasks:
+    - name: ping
+      ansible.windows.win_ping:
+
+    - name: query uptime
+      ansible.windows.win_shell: |
+        $ts = (Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
+        "{0:dd}d {0:hh}h {0:mm}m" -f $ts
+      changed_when: false
+      register: u
+
+    - name: print uptime
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}: up {{ u.stdout | trim }}"
