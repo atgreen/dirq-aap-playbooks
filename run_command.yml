@@ -1,0 +1,20 @@
+# Run an arbitrary command across the fleet — pass `cmd` as an extra var
+# at launch time. Useful as a generic ad-hoc replacement when AAP's
+# Run Command page isn't an option (DirQ credential type isn't selectable
+# there since it's not a Machine credential).
+#
+# Example: launch the template with extra_vars: { cmd: "df -h /" }
+- name: Run command
+  hosts: os_linux
+  gather_facts: false
+  vars:
+    cmd: "uptime"
+  tasks:
+    - name: "execute: {{ cmd }}"
+      ansible.builtin.command: "{{ cmd }}"
+      changed_when: false
+      register: r
+
+    - name: print stdout
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} | rc={{ r.rc }} | {{ r.stdout }}"

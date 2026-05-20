@@ -1,0 +1,14 @@
+# Run a single command on every Linux host and print the output.
+# Demonstrates capturing stdout from a remote command via DirQ exec.
+- name: Show uptime
+  hosts: os_linux
+  gather_facts: false
+  tasks:
+    - name: uptime
+      ansible.builtin.command: uptime
+      changed_when: false
+      register: u
+
+    - name: print uptime
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}: {{ u.stdout }}"

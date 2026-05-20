@@ -1,0 +1,15 @@
+# Gather facts and print a small summary.
+# If the DirQ fact cache plugin is configured (fact_caching = atgreen.dirq.dirq),
+# gather_facts is near-instant — the facts come from the DirQ server's cache
+# instead of running the setup module on every host.
+- name: Summarize host facts
+  hosts: os_linux
+  gather_facts: true
+  tasks:
+    - name: print os/cpu/mem summary
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }}: {{ ansible_distribution }}
+          {{ ansible_distribution_version }} on {{ ansible_architecture }},
+          {{ ansible_processor_vcpus | default('?') }} vCPU,
+          {{ ansible_memtotal_mb | default('?') }} MB

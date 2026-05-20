@@ -1,0 +1,7 @@
+# Smoke test — confirms AAP can reach Linux hosts through the DirQ mesh.
+- name: Ping all Linux hosts
+  hosts: os_linux
+  gather_facts: false
+  tasks:
+    - name: ping
+      ansible.builtin.ping:

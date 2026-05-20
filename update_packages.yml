@@ -1,0 +1,18 @@
+# Apply pending package updates on RHEL-family Linux hosts.
+# Exercises become (sudo) through the DirQ exec path.
+- name: Apply package updates
+  hosts: os_linux
+  become: true
+  gather_facts: true
+  tasks:
+    - name: yum/dnf upgrade (RedHat family)
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: apt upgrade (Debian family)
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_os_family == "Debian"
